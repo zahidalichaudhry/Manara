@@ -4,22 +4,31 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     android.webkit.WebView webView;
     boolean loadingFinished = true;
     boolean redirect = false;
     private ProgressBar progress;
+    boolean Disableornot=false;
+    TextView title;
     String url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //Remove notification bar
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         webView = (android.webkit.WebView) findViewById(R.id.webView);
         progress = (ProgressBar) findViewById(R.id.progressBar);
+        title = (TextView) findViewById(R.id.title);
 
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -32,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageStarted(view, url, favicon);
 //                    tvNoInternet.setVisibility(View.VISIBLE);
                 progress.setVisibility(View.VISIBLE);
-                setTitle("Loading....");
+                title.setText("Loading....");
+                Disableornot=false;
             }
 
 
@@ -41,17 +51,27 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageFinished(view, url);
 //                    tvNoInternet.setVisibility(View.GONE);
                 progress.setVisibility(View.GONE);
-                setTitle(view.getTitle());
+                title.setText(view.getTitle());
+                Disableornot=true;
             }
         });
     }
-    @Override
-    public void onBackPressed() {
+    public void previouspage()
+    {
         if (webView.canGoBack()) {
             webView.goBack();
         } else {
             super.onBackPressed();
         }
+    }
+    @Override
+    public void onBackPressed()
+    {
+        if (Disableornot)
+        {
+            previouspage();
+        }
+
     }
 
 }

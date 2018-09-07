@@ -7,6 +7,8 @@ import android.net.Network;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.romainpiel.shimmer.Shimmer;
@@ -16,19 +18,23 @@ import com.romainpiel.shimmer.ShimmerTextView;
 public class Spash extends AppCompatActivity {
     ImageView imageView;
     Shimmer shimmer,shimmer2;
-    ShimmerTextView shimmer_tv;
-    ShimmerButton shimmer_btn;
+    ShimmerButton shimmer_tv;
+    ShimmerTextView shimmer_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //Remove notification bar
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_spash);
         imageView = (ImageView)findViewById(R.id.image);
-        shimmer_tv = (ShimmerTextView)findViewById(R.id.shimmer_tv);
-        shimmer_btn = (ShimmerButton)findViewById(R.id.shimmer_btn);
+        shimmer_tv = (ShimmerButton)findViewById(R.id.shimmer_tv);
+        shimmer_btn = (ShimmerTextView)findViewById(R.id.shimmer_btn);
         shimmer = new Shimmer();
         shimmer.start(shimmer_tv);
         shimmer2 = new Shimmer();
         shimmer.start(shimmer_tv);
+        shimmer.start(shimmer_btn);
         Thread myThread = new Thread(){
             @Override
             public void run() {
